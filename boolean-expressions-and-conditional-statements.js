@@ -1,52 +1,63 @@
-/*
+// Finding the stone of immortality.
 
-Objective:
-You will practice creating and combining boolean expressions
-to drive logic and outcomes in you program.
+const input = require("readline-sync")
 
-Instructions:
-If you are not familiar with the concept of a text-based adventure game,
-let's set the scene...
-Example: "You wake up in a dark forest. There are two paths ahead of you:
-one leading to the mountains and one to a village.
-Your choices will determine your fate!"
+let $backPack = ['raw meat', 'flashlight', 'a bottle of water', 'knife']
 
-Define the Requirements: You must:
-  - Write conditional statements to handle player choices.
-  - Use boolean expressions to combine multiple conditions.
-  - Include at least one use of logical operators (&&, ||, !).
+console.log(`You are inside the mysterious temple, looking for the stone of immortality.
+  In your backpack: ${$backPack};
+  There are two doors ahead of you;
+  First (1) with crocodiles in it, second (2) with fire.`)
 
-Starter Code:
-  - Run the following command in your terminal to install the readline-sync module:
-    npm install readline-sync
+let doorNumber1 = input.questionInt("Choose the door by entering either \"1\" or \"2\": ")
 
-Paste the following code into your editor:
-
-*/
-
-const readline = require('readline-sync');
-
-const hasTorch = true;
-const hasMap = false;
-
-console.log("You see two paths: one leads to the mountains, the other to the village.");
-const choice = readline.question("Do you go to the 'mountains' or the 'village'?");
-
-if (choice === "mountains" && hasTorch) {
-  console.log("You safely navigate through the dark mountains.");
-} else if (choice === "mountains" && !hasTorch) {
-  console.log("It's too dark to proceed. You decide to turn back.");
-} else if (choice === "village" || hasMap) {
-  console.log("You find your way to the village.");
+if (doorNumber1 === 1) {
+  console.log("You chose the crocodile door, you can use raw meat to distract them and make it through")
+  let useMeat = input.question("Enter 'Yes' to use your item, 'No' if not: ")
+  if (useMeat.toLowerCase() === 'yes' && $backPack.includes("raw meat")) {
+    console.log("Congratulations, you moved to the next step!")
+    $backPack.splice($backPack.indexOf("raw meat"), 1)
+    console.log("Now in your backpack: " + $backPack)
+    let nextItemDoor1 = input.questionInt(`Choose only ONE item: 
+      (1) - Key.
+      (2) - Book with spells
+      Enter your item number: `)
+    if (nextItemDoor1 === 1) {
+      $backPack.push("key")
+      console.log("Now in your backpack: " + $backPack)
+    } else if (nextItemDoor1 === 2) {
+      $backPack.push("book with spells")
+      console.log("Now in your backpack: " + $backPack)
+    }
+    console.log(`There are two more doors ahead of you: 
+      (1) - A door that requires a key
+      (2) - A door that has the stone of immortality, but requires specific spells to open`)
+    let chooseNextDoor = input.questionInt("Choose the next door by entering (1) or (2): ")
+    if (chooseNextDoor === 1 && $backPack.includes("key")) {
+      console.log("You entered the room and found the stone of immortality! Thanks for playing this game!")
+    } else if (chooseNextDoor === 2 && $backPack.includes("book with spells")) {
+      console.log("Congratulations, you opened the door with spells and found the stone of immortality")
+    } else if (chooseNextDoor === 1 && !$backPack.includes("key") || chooseNextDoor === 2 && !$backPack.includes("book with spells")) {
+      console.log("You lost because you do not have the necessary item.\nYour backpack contains: " + $backPack)
+    } else {
+      console.log("Try again and enter either '1' or '2'.")
+    }
+  } else if (useMeat.toLowerCase() === "no") {
+    console.log("You lost, try again.")
+  } else {
+    console.log("Try again and enter either 'Yes' or 'No'.")
+  }
+} else if (doorNumber1 === 2) {
+  console.log("You chose the fire door, you can use bucket of water to pass through safely")
+  let useBuckOfWater = input.question("Enter 'Yes' to use your item, 'No' if not: ")
+  if (useBuckOfWater.toLowerCase() === "no" || (useBuckOfWater.toLowerCase() === "yes" && !$backPack.includes("a bucket of water"))) {
+    console.log("You lost, try again.");
+    if (useBuckOfWater.toLowerCase() === "yes") {
+      console.log("You lost becaue you do not have the necessary item.\nYour backpack contains: " + $backPack)
+    }
+  } else {
+    console.log("Try again and enter either 'Yes' or 'No'.")
+  }
 } else {
-  console.log("You get lost and wander aimlessly.");
+  console.log("Try again and enter either '1' or '2'.")
 }
-
-/* 
-
-Add Customization and expand the game:
-  - Add more choices and scenarios.
-  - Include additional items (e.g., a sword, a compass).
-  - Use nested conditionals and logical operators to create complex outcomes.
-
-*/
